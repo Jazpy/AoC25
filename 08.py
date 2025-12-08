@@ -1,14 +1,10 @@
-from functools import cache
-
 boxes = []
 with open('inputs/08.txt') as in_f:
     for line in in_f:
         boxes.append(tuple(int(x) for x in line.split(',')))
 
-
 def get_dist(b0, b1):
     return (b0[0] - b1[0]) ** 2 + (b0[1] - b1[1]) ** 2 + (b0[2] - b1[2]) ** 2
-
 
 distances = []
 for i in range(len(boxes) - 1):
