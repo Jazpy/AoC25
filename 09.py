@@ -1,10 +1,17 @@
 with open('inputs/09.txt') as in_f:
     rectangles = [tuple((int(l.split(',')[0]), int(l.split(',')[1]))) for l in in_f]
 
-lines = [(rectangles[-1], rectangles[0])]
+hlines, vlines = [], []
 for i in range(len(rectangles) - 1):
     r0, r1 = rectangles[i], rectangles[i + 1]
-    lines.append((r0, r1))
+    if r0[0] == r1[0]:
+        vlines.append((r0, r1))
+    else:
+        hlines.append((r0, r1))
+if rectangles[0][0] == rectangles[-1][0]:
+    vlines.append((rectangles[0], rectangles[-1]))
+else:
+    hlines.append((rectangles[0], rectangles[-1]))
 
 def ccw(A,B,C):
     return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
@@ -26,8 +33,8 @@ def outer(c0, c1):
                 (nc1, (nc1[0], nc0[1])), ((nc1[0], nc0[1]), nc0)]
 
     for a, b in segments:
-        hits = 0
-        for l in lines:
+        ls = hlines if a[0] == b[0] else vlines
+        for l in ls:
             if intersects(a, b, l[0], l[1]):
                 return True
     return False
